@@ -3,29 +3,41 @@ var webpack = require('webpack');
 var BundleTracker = require('webpack-bundle-tracker');
 
 module.exports = {
-  context: __dirname,
+    context: __dirname,
 
-  entry: './assets/js/index',
+    devtool: 'eval',
+    
+    entry: [
+        'webpack-dev-server/client?http://localhost:3000',
+        'webpack/hot/only-dev-server',
+        './assets/js/index'
+    ],
 
-  output: {
-      path: path.resolve('./assets/bundles/'),
-      filename: "[name].js"
-  },
+    output: {
+        path: path.resolve('./assets/bundles/'),
+        filename: "[name].js",
+        publicPath: 'http://localhost:3000/assets/bundles/'
+    }
+    ,
 
-  plugins: [
-    new BundleTracker({filename: './webpack-stats.json'})
-  ],
+    plugins: [
+        new webpack.HotModuleReplacementPlugin(),
+        new webpack.NoErrorsPlugin(),
+        new BundleTracker({filename: './webpack-stats.json'})
+    ],
 
-  module: {
-    loaders: [
-      { test: /\.jsx?$/, exclude: /node_modules/, loader: 'babel-loader', query: {
-        presets: ['es2015', 'react']
-      }}
-    ]
-  },
+    module: {
+        loaders: [
+            {
+                test: /\.jsx?$/, exclude: /node_modules/, loaders: ['react-hot', 'babel-loader']
+            }
+        ]
+    }
+    ,
 
-  resolve: {
-    modulesDirectories: ['node_modules', 'bower_components'],
-    extensions: ['', '.js', '.jsx']
-  }
-};
+    resolve: {
+        modulesDirectories: ['node_modules', 'bower_components'],
+        extensions: ['', '.js', '.jsx']
+    }
+}
+;
