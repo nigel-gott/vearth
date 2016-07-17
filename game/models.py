@@ -11,7 +11,7 @@ class CoordField(CompositeField):
 
 # Create your models here.
 class Human(models.Model):
-    coord = CoordField();
+    coord = CoordField()
     name = models.CharField(max_length=50)
 
     def __str__(self):

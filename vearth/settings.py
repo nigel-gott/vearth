@@ -43,7 +43,11 @@ APPS = [
     'game.apps.GameConfig'
 ]
 
-INSTALLED_APPS = DJANGO_APPS + APPS
+THIRD_PARTY_APPS = [
+    'webpack_loader'
+]
+
+INSTALLED_APPS = DJANGO_APPS + APPS + THIRD_PARTY_APPS
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
@@ -127,5 +131,19 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'assets'),
+)
+
+WEBPACK_LOADER = {
+    'DEFAULT': {
+        'CACHE': not DEBUG,
+        'BUNDLE_DIR_NAME': 'bundles/', # must end with slash
+        'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.json'),
+        'POLL_INTERVAL': 0.1,
+        'IGNORE': ['.+\.hot-update.js', '.+\.map']
+    }
+}
 
 STATIC_URL = '/static/'
